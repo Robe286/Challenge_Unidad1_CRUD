@@ -13,32 +13,68 @@ let usuarios = [
     { id: 5, nombre: 'Blanka', edad: 32, lugarProcedencia: 'Brasil' },
 ];
 
+app.get('/', (req, res) => {
+    res.send(`
+    <h1>Personajes Street Fighter</h1>
+    <ul>
+    ${usuarios.map((usuario) => `<li>id: ${usuario.id} | Nombre: ${usuario.nombre} | Edad: ${usuario.edad} | Procedencia: ${usuario.lugarProcedencia}</li>`  ).join('')}
+    </ul>
+    <form action="/usuarios" method="post">
+    <label for="nombre">Nombre</label>
+    <input type="text" id="nombre" name="nombre" required>
+    <label for="edad">Edad</label>
+    <input type="text" id="edad" name="edad" required>
+    <label for="lugarProcedencia">Procedencia</label>
+    <input type="text" id="lugarProcedencia" name="lugarProcedencia" required>
+    <button type="submit">Agregar usuario</button>
+    </form>
+    <a href="/usuarios">Usuarios Json</a>
+    <a href="/usuarios/:nombre">Personaje json</a>
+    `)
+})
+
 app.get('/usuarios', (req, res) => {
     res.json(usuarios);
 })
 
 app.post('/usuarios', (req, res) => {
+    const nuevoUsuario = {
+        id: usuarios.length + 1,
+        nombre: req.body.nombre,
+        edad: req.body.edad,
+        lugarProcedencia: req.body.lugarProcedencia
+    }
+    usuarios.push(nuevoUsuario);
+    res.redirect('/');
+});
+
+
+app.get('/usuarios/:nombre', (req, res) => {
+    const findPersonaje = usuarios.find((usuario) => {
+        const personaje = req.params.nombre;
+        usuario.nombre.toLowerCase() === personaje.toLowerCase()
+    })
+    res.json(findPersonaje)
     
 })
-
-
-/*
-app.get('/', (req, res) => {
-    res.send(`
-    <h1>Personajes Street Fighter</h1>
-    <ul>
-        ${usuarios.map((usuario) => `<li>ID: ${usuario.id} | Nombre: ${usuario.nombre} | Edad: ${usuario.edad} | Procedencia: ${usuario.lugarProcedencia}</li>`  ).join('')}
-    </ul>
-    <form action="/usuarios" method="post">
-    <label for="nombre">Nombre</label>
-    <input type="text" id="nombre" name="nombre" required>
-    <button type="submit">Agregar usuario</button>
-    </form>
-    `)
-})
-*/
 
 
 app.listen(PORT, () => {
     console.log(`El servidor está escuchando en el puerto: http://localhost:${PORT}`);
 })
+
+
+/*
+app.get('/usuarios', (req, res) => {
+    res.json(usuarios);
+})
+
+app.get('/usuarios/:nombre', (req, res) => {
+    const findpersonaje = usuarios.find((usuario) => {
+        const personaje = req.params.nombre;
+        usuario.nombre.toLowerCase() === personaje.toLowerCase()
+    })
+    res.json(findpersonaje)
+    
+})
+*/
