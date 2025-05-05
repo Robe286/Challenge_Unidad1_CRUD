@@ -64,17 +64,19 @@ En caso contrario, find devuelve undefined.
 */
 
 app.put('/usuarios/:nombre', (req, res) => {
-    const nombre = req.params.nombre
+    const nombre = req.params.nombre;
     const datosActualizados = req.body;
-    
-    const usuario = usuarios.find(usuario => usuario.nombre === nombre);
-    if (!usuario) {
-        return res.status(404).json({mensaje: `Usuario con nombre ${nombre} no encontrado`})
+
+    const index = usuarios.findIndex(usuario => usuario.nombre === nombre);
+    if (index === -1) { // Manejo de errores con if y operador lógico igualdad stricta
+        return res.status(404).json({ mensaje: `Usuario con nombre ${nombre} no encontrado` });
     }
-    Object.assign(usuario, datosActualizados);
+
+    usuarios[index] = { ...usuarios[index], ...datosActualizados }; // crea nuevo objeto y lo reemplaza
+
     res.json({
-        mensaje:`Usuario con nombre ${nombre} actualizado`,
-        datos: usuario,
+        mensaje: `Usuario con nombre ${nombre} actualizado`,
+        datos: usuarios[index],
     });
 });
 
@@ -102,7 +104,7 @@ app.post('/usuarios', (req, res) => {
 */
 
 // ACTUALIZAR USUARIO UTILIZANDO findIndex() y SPREAD OPERATOR -- SE TRABAJA CON COPIAS
-// ¿MEJOR ESTE O OBJECT ASSIGN?
+// ¿MEJOR ESTE O CON find() y Object.assign?
 
 /*
 app.put('/usuarios/:nombre', (req, res) => {
@@ -122,4 +124,23 @@ app.put('/usuarios/:nombre', (req, res) => {
     });
 });
 
+*/
+
+// PUT con find() y Object.assign
+
+/*
+app.put('/usuarios/:nombre', (req, res) => {
+    const nombre = req.params.nombre
+    const datosActualizados = req.body;
+    
+    const usuario = usuarios.find(usuario => usuario.nombre === nombre);
+    if (!usuario) {
+        return res.status(404).json({mensaje: `Usuario con nombre ${nombre} no encontrado`})
+    }
+    Object.assign(usuario, datosActualizados);
+    res.json({
+        mensaje:`Usuario con nombre ${nombre} actualizado`,
+        datos: usuario,
+    });
+});
 */
