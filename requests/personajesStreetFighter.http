@@ -20,10 +20,11 @@ Content-Type: application/json
 
 ###
 
-PUT {{host}}/usuarios/Ryu
+PUT {{host}}/usuarios/Blanka
 Content-Type: application/json
 
 {
+    "id": "5",
     "nombre": "Vega",
     "edad": "34",
     "lugarProcedencia": "España"

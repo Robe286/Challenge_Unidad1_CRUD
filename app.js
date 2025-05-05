@@ -37,7 +37,7 @@ app.get('/usuarios', (req, res) => {
     res.json(usuarios);
 })
 
-// CREAR USUARIO CON REST CLIENT
+// CREAR USUARIO CON REST CLIENT ---- ¿Se puede asignar un id + automatizado?
 app.post('/usuarios', (req, res) => {
     const nuevoUsuario = req.body;
     res.status(201).json({
@@ -50,30 +50,44 @@ app.post('/usuarios', (req, res) => {
 app.get('/usuarios/:nombre', (req, res) => {
     const findPersonaje = usuarios.find((usuario) => {
         const personaje = req.params.nombre;
-       return usuario.nombre.toLowerCase() === personaje.toLowerCase()
+       return usuario.nombre === personaje
     })
     res.json(findPersonaje)
     
 })
 
+/*
+El método find ejecuta la función callback una vez por cada índice del array
+hasta que encuentre uno en el que el callback devuelva un valor verdadero. 
+Si es así, find devuelve inmediatamente el valor del elemento.
+En caso contrario, find devuelve undefined.
+*/
+
 app.put('/usuarios/:nombre', (req, res) => {
-    const {nombre} = req.params;
+    const nombre = req.params.nombre
     const datosActualizados = req.body;
+    
+    const usuario = usuarios.find(usuario => usuario.nombre === nombre);
+    if (!usuario) {
+        return res.status(404).json({mensaje: `Usuario con nombre ${nombre} no encontrado`})
+    }
+    Object.assign(usuario, datosActualizados);
     res.json({
         mensaje:`Usuario con nombre ${nombre} actualizado`,
-        datos: datosActualizados,
+        datos: usuario,
     });
-    const index = usuarios.findIndex(usuario => usuario.nombre === nombre)
-    const nuevoArray = [...usuarios];
-    nuevoArray[index] = {...usuarios[index], nombre: `${nombre}`};
 });
 
+// Se usa find() en vez de .findIndex() para obtener directamente el usuario.
+// Object.assign() actualiza el objeto sin necesidad de crear uno nuevo o copiar el array.
+// Menos líneas y más directo?
+// ----------------------------- ESTUDIAR IDONEIDAD --------------------------------------
 
 app.listen(PORT, () => {
     console.log(`El servidor está escuchando en el puerto: http://localhost:${PORT}`);
 })
 
-// CREAR USUARIO OBTENIENDO DATOS DE FORMULARIO
+// CREAR USUARIO CON POST OBTENIENDO DATOS DE UN FORMULARIO
 /*
 app.post('/usuarios', (req, res) => {
     const nuevoUsuario = {
@@ -85,4 +99,41 @@ app.post('/usuarios', (req, res) => {
     usuarios.push(nuevoUsuario);
     res.redirect('/');
 });
+*/
+
+/*
+app.put('/usuarios/:nombre', (req, res) => {
+    const {nombre} = req.params;
+    const datosActualizados = req.body;
+    res.json({
+        mensaje:`Usuario con nombre ${nombre} actualizado`,
+        datos: datosActualizados,
+    });
+    const index = usuarios.findIndex(usuario => usuario.nombre === nombre)
+    const nuevoArray = [...usuarios];
+    nuevoArray[index] = {...usuarios[index], nombre: `${nombre}`};
+});
+*/
+
+// ACTUALIZAR USUARIO UTILIZANDO SPREAD OPERATOR -- SE TRABAJA CON COPIAS
+// ¿MEJOR ESTE O OBJECT ASSIGN?
+
+/*
+app.put('/usuarios/:nombre', (req, res) => {
+    const nombre = req.params.nombre;
+    const datosActualizados = req.body;
+
+    const index = usuarios.findIndex(u => u.nombre === nombre);
+    if (index === -1) {
+        return res.status(404).json({ mensaje: `Usuario con nombre ${nombre} no encontrado` });
+    }
+
+    usuarios[index] = { ...usuarios[index], ...datosActualizados }; // crea nuevo objeto y lo reemplaza
+
+    res.json({
+        mensaje: `Usuario con nombre ${nombre} actualizado`,
+        datos: usuarios[index],
+    });
+});
+
 */
