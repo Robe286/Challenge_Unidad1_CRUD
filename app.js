@@ -73,6 +73,22 @@ app.put('/usuarios/:nombre', (req, res) => {
     });
 });
 
+app.delete('/usuarios/:nombre', (req, res) => {
+    const nombre = req.params.nombre
+    const encontrarUsuario = usuarios.find(usuario => usuario.nombre === nombre)
+    if (!encontrarUsuario) {
+        return res.status(404).json({ mensaje: `Usuario con nombre ${nombre} no encontrado` })
+    }
+
+    usuarios = usuarios.filter(usuario => usuario.nombre !== nombre); // filter devuelve un nuevo array con los usuarios
+    // que no han coincidido en la comparación y excluye el usuario que si coincide en esta. 
+    
+    res.json({
+        mensaje: `Usuario con nombre ${nombre} eliminado`,
+        datos: usuarios
+    });
+})
+
 app.listen(PORT, () => {
     console.log(`El servidor está escuchando en el puerto: http://localhost:${PORT}`);
 })

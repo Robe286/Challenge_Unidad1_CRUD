@@ -24,12 +24,15 @@ PUT {{host}}/usuarios/Blanka
 Content-Type: application/json
 
 {
-    "id": "5",
+    "id": 5,
     "nombre": "Vega",
     "edad": "34",
     "lugarProcedencia": "España"
 }
 
+###
+
+DELETE {{host}}/usuarios/Blanka
 
 
 
