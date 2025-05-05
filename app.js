@@ -29,7 +29,7 @@ app.get('/', (req, res) => {
     <button type="submit">Agregar usuario</button>
     </form>
     <a href="/usuarios">Usuarios Json</a>
-    <a href="/usuarios/:nombre">Personaje json</a>
+    <a href="/usuarios/Ryu">Personaje json</a>
     `)
 })
 
@@ -37,22 +37,20 @@ app.get('/usuarios', (req, res) => {
     res.json(usuarios);
 })
 
+// CREAR USUARIO CON REST CLIENT
 app.post('/usuarios', (req, res) => {
-    const nuevoUsuario = {
-        id: usuarios.length + 1,
-        nombre: req.body.nombre,
-        edad: req.body.edad,
-        lugarProcedencia: req.body.lugarProcedencia
-    }
-    usuarios.push(nuevoUsuario);
-    res.redirect('/');
+    const nuevoUsuario = req.body;
+    res.status(201).json({
+        mensaje: 'Usuario creado',
+        usuario: nuevoUsuario
+    });
+    usuarios.push(nuevoUsuario)
 });
-
 
 app.get('/usuarios/:nombre', (req, res) => {
     const findPersonaje = usuarios.find((usuario) => {
         const personaje = req.params.nombre;
-        usuario.nombre.toLowerCase() === personaje.toLowerCase()
+       return usuario.nombre.toLowerCase() === personaje.toLowerCase()
     })
     res.json(findPersonaje)
     
@@ -63,18 +61,16 @@ app.listen(PORT, () => {
     console.log(`El servidor está escuchando en el puerto: http://localhost:${PORT}`);
 })
 
-
+// CREAR USUARIO OBTENIENDO DATOS DE FORMULARIO
 /*
-app.get('/usuarios', (req, res) => {
-    res.json(usuarios);
-})
-
-app.get('/usuarios/:nombre', (req, res) => {
-    const findpersonaje = usuarios.find((usuario) => {
-        const personaje = req.params.nombre;
-        usuario.nombre.toLowerCase() === personaje.toLowerCase()
-    })
-    res.json(findpersonaje)
-    
-})
+app.post('/usuarios', (req, res) => {
+    const nuevoUsuario = {
+        id: usuarios.length + 1,
+        nombre: req.body.nombre,
+        edad: req.body.edad,
+        lugarProcedencia: req.body.lugarProcedencia
+    }
+    usuarios.push(nuevoUsuario);
+    res.redirect('/');
+});
 */
