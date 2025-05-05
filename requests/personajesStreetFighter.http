@@ -8,7 +8,7 @@ GET {{host}}/usuarios/Ryu
 
 ###
 
-POST {{host}}/usuarios HTTP/1.1
+POST {{host}}/usuarios
 Content-Type: application/json
 
 {
@@ -16,6 +16,17 @@ Content-Type: application/json
     "nombre": "Zangier",
     "edad": "45",
     "lugarProcedencia": "Turquia"
+}
+
+###
+
+PUT {{host}}/usuarios/Ryu
+Content-Type: application/json
+
+{
+    "nombre": "Vega",
+    "edad": "34",
+    "lugarProcedencia": "España"
 }
 
 

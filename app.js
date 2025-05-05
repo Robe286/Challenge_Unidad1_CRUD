@@ -56,6 +56,18 @@ app.get('/usuarios/:nombre', (req, res) => {
     
 })
 
+app.put('/usuarios/:nombre', (req, res) => {
+    const {nombre} = req.params;
+    const datosActualizados = req.body;
+    res.json({
+        mensaje:`Usuario con nombre ${nombre} actualizado`,
+        datos: datosActualizados,
+    });
+    const index = usuarios.findIndex(usuario => usuario.nombre === nombre)
+    const nuevoArray = [...usuarios];
+    nuevoArray[index] = {...usuarios[index], nombre: `${nombre}`};
+});
+
 
 app.listen(PORT, () => {
     console.log(`El servidor está escuchando en el puerto: http://localhost:${PORT}`);
