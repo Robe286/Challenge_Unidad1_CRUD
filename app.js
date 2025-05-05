@@ -56,13 +56,6 @@ app.get('/usuarios/:nombre', (req, res) => {
     
 })
 
-/*
-El método find ejecuta la función callback una vez por cada índice del array
-hasta que encuentre uno en el que el callback devuelva un valor verdadero. 
-Si es así, find devuelve inmediatamente el valor del elemento.
-En caso contrario, find devuelve undefined.
-*/
-
 app.put('/usuarios/:nombre', (req, res) => {
     const nombre = req.params.nombre;
     const datosActualizados = req.body;
@@ -79,11 +72,6 @@ app.put('/usuarios/:nombre', (req, res) => {
         datos: usuarios[index],
     });
 });
-
-// Se usa find() en vez de .findIndex() para obtener directamente el usuario.
-// Object.assign() actualiza el objeto sin necesidad de crear uno nuevo o copiar el array.
-// Menos líneas y más directo?
-// ----------------------------- ESTUDIAR IDONEIDAD --------------------------------------
 
 app.listen(PORT, () => {
     console.log(`El servidor está escuchando en el puerto: http://localhost:${PORT}`);
@@ -104,7 +92,7 @@ app.post('/usuarios', (req, res) => {
 */
 
 // ACTUALIZAR USUARIO UTILIZANDO findIndex() y SPREAD OPERATOR -- SE TRABAJA CON COPIAS
-// ¿MEJOR ESTE O CON find() y Object.assign?
+// ¿MEJOR ESTE O OBJECT ASSIGN?
 
 /*
 app.put('/usuarios/:nombre', (req, res) => {
@@ -126,7 +114,7 @@ app.put('/usuarios/:nombre', (req, res) => {
 
 */
 
-// PUT con find() y Object.assign
+// PUT con find() y Object,
 
 /*
 app.put('/usuarios/:nombre', (req, res) => {
@@ -144,3 +132,19 @@ app.put('/usuarios/:nombre', (req, res) => {
     });
 });
 */
+
+/*
+El método find ejecuta la función callback una vez por cada índice del array
+hasta que encuentre uno en el que el callback devuelva un valor verdadero. 
+Si es así, find devuelve inmediatamente el valor del elemento.
+En caso contrario, find devuelve undefined.
+*/
+
+// Se usa find() en vez de .findIndex() para obtener directamente el usuario.
+// Object.assign() actualiza el objeto sin necesidad de crear uno nuevo o copiar el array.
+// Menos líneas y más directo?
+// ----------------------------- ESTUDIAR IDONEIDAD --------------------------------------
+
+
+
+
