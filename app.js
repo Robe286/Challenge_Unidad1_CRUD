@@ -101,21 +101,7 @@ app.post('/usuarios', (req, res) => {
 });
 */
 
-/*
-app.put('/usuarios/:nombre', (req, res) => {
-    const {nombre} = req.params;
-    const datosActualizados = req.body;
-    res.json({
-        mensaje:`Usuario con nombre ${nombre} actualizado`,
-        datos: datosActualizados,
-    });
-    const index = usuarios.findIndex(usuario => usuario.nombre === nombre)
-    const nuevoArray = [...usuarios];
-    nuevoArray[index] = {...usuarios[index], nombre: `${nombre}`};
-});
-*/
-
-// ACTUALIZAR USUARIO UTILIZANDO SPREAD OPERATOR -- SE TRABAJA CON COPIAS
+// ACTUALIZAR USUARIO UTILIZANDO findIndex() y SPREAD OPERATOR -- SE TRABAJA CON COPIAS
 // ¿MEJOR ESTE O OBJECT ASSIGN?
 
 /*
@@ -123,8 +109,8 @@ app.put('/usuarios/:nombre', (req, res) => {
     const nombre = req.params.nombre;
     const datosActualizados = req.body;
 
-    const index = usuarios.findIndex(u => u.nombre === nombre);
-    if (index === -1) {
+    const index = usuarios.findIndex(usuario => usuario.nombre === nombre);
+    if (index === -1) { // Manejo de errores con if y operador lógico igualdad stricta
         return res.status(404).json({ mensaje: `Usuario con nombre ${nombre} no encontrado` });
     }
 
